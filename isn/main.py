@@ -1,7 +1,7 @@
 from tkinter import *
 import random
 
-#CONSTANTES
+#CONSTANTES + VARIABLES
 C = 64                 #Coté d'un carré
 NbC = 9                 #Nombre de carré
 W, H = NbC*C, NbC*C     #Zone de jeu
@@ -64,7 +64,7 @@ def launch(select_map):
 		infos_text = menu.create_text(x2, y2, text='Informations', font=('Times', '16', 'bold'))
 		infos_lifes = menu.create_text(x2, yl, text=('Vie(s) : ' + str(Life)), font=('Times', '12'), anchor="center")
 		infos_waves = menu.create_text(x2, yw, text=('Vague(s) : ' + str(Wave) + '/10'), font=('Times', '12'), anchor="center")
-		infos_money = menu.create_text(x2, ym, text=('Argent : ' + str(Money) + '€'), font=('Times', '12'), anchor="center")
+		infos_money = menu.create_text(x2, ym, text=('Argent : ' + str(Money) + '$'), font=('Times', '12'), anchor="center")
 
 	#ACHATS TOURELLES
 
@@ -77,7 +77,7 @@ def launch(select_map):
 		box1 = menu.create_rectangle(x0, y0, x1, y1, width=2, fill="LemonChiffon2")
 		box1_img = menu.create_image(xi, yi, image=tower, anchor='center')
 		box1_title = menu.create_text(xt, yt, text='Ketchup', font=('Times', '14', 'bold'))
-		box1_price = menu.create_text(xp, yp, text=('Prix : ' + str(Price) + '€'), font=('Times', '12'))
+		box1_price = menu.create_text(xp, yp, text=('Prix : ' + str(Price) + '$'), font=('Times', '12'))
 
 	def tower2_box():
 		global box2
@@ -87,7 +87,7 @@ def launch(select_map):
 		box2 = menu.create_rectangle(x0, y0, x1, y1, width=2, fill="LemonChiffon2")
 		box2_img = menu.create_image(xi, yi, image=tower2, anchor='center')
 		box2_title = menu.create_text(xt, yt, text='Moutarde', font=('Times', '14', 'bold'))
-		box2_price = menu.create_text(xp, yp, text=('Prix : ' + str(Price*2) + '€'), font=('Times', '12'))
+		box2_price = menu.create_text(xp, yp, text=('Prix : ' + str(Price*2) + '$'), font=('Times', '12'))
 
 	def tower3_box():
 		global box3
@@ -97,7 +97,7 @@ def launch(select_map):
 		box3 = menu.create_rectangle(x0, y0, x1, y1, width=2, fill="LemonChiffon2")
 		box3_img = menu.create_image(xi, yi, image=tower3, anchor='center')
 		box3_title = menu.create_text(xt, yt, text='Sel', font=('Times', '14', 'bold'))
-		box3_price = menu.create_text(xp, yp, text=('Prix : ' + str(Price*4) + '€'), font=('Times', '12'))
+		box3_price = menu.create_text(xp, yp, text=('Prix : ' + str(Price*4) + '$'), font=('Times', '12'))
 
 	def tower_select(evt):
 		global select_tower
@@ -165,11 +165,11 @@ def launch(select_map):
 		for y in range(NbC):
 			for x in range(NbC):
 				if tab[y][x]=='M' and tto[y][x]=='0':
-					wall = win.create_rectangle(x*C, y*C, x*C+C,y*C+C, fill = "darkolivegreen")
+					murs = win.create_rectangle(x*C, y*C, x*C+C,y*C+C, fill = "darkolivegreen")
 				elif tab[y][x]=='D' or tab[y][x]=='G'  or tab[y][x]=='B' or tab[y][x]=='H':
-					way = win.create_rectangle(x*C, y*C, x*C+C,y*C+C, fill = "khaki", outline = "")
+					chemin = win.create_rectangle(x*C, y*C, x*C+C,y*C+C, fill = "khaki", outline = "")
 				elif tab[y][x]=='S' or tab[y][x]=='A':
-					arrival = win.create_rectangle(x*C, y*C, x*C+C,y*C+C, fill = "darkgoldenrod", outline = "")
+					arrivee = win.create_rectangle(x*C, y*C, x*C+C,y*C+C, fill = "darkgoldenrod", outline = "")
 
 	createMap(root)
 
@@ -194,7 +194,7 @@ def launch(select_map):
 	def ijVersxy(ij):
 		i, j = ij
 		x = j * C + C/2
-		y = i * C + 1 + C/2
+		y = i * C + 1 +C/2
 		return (x, y)
 
 	#APPARITION ENNEMI ET OBJECTIF
@@ -218,7 +218,7 @@ def launch(select_map):
 					Money -= Price*2
 					tto[int(y/C)][int(x/C)] = '1'
 				elif select_tower == 3 and Money >= Price*4:
-					towertab.append(Tower((int(x/C)*C+C/2),(int(y/C)*C+C/2),"tower3.gif", 1.6))
+					towertab.append(Tower((int(x/C)*C+C/2),(int(y/C)*C+C/2),"tower3.gif", 1.8))
 					Money -= Price*4
 					tto[int(y/C)][int(x/C)] = '1'
 				info_box()
@@ -229,13 +229,14 @@ def launch(select_map):
 		"produit le xC, yC du centre de la case dans laquelle tombe x, y"
 		return (int((x+C/2)/C)*C)+C/2,(int((y+C/2)/C)*C)+C/2
 
+	#CLASSE POUR LES ENNEMIS
 
 	class Merguez:
 
 		def __init__(self):
 			self.image = PhotoImage(file="merguez1.gif")
 			self.id = win.create_image(ijVersxy(Start(tab)), image=self.image, anchor='center')
-			self.hp = random.randint(3,4) + int(Wave*1.8)
+			self.hp = random.randint(3,4) + int(Wave*1.2)
 	
 		def range_tower(self):
 			global Money
@@ -251,7 +252,7 @@ def launch(select_map):
 							shotter = win.create_line(tx, ty, mx, my, joinstyle="round", width=2)
 							win.after(125, destroy_shot, shotter)
 							self.hp -= 1
-							print(self.hp)
+							#print(self.hp)
 							if self.hp <= 0:
 								win.delete(self.id)
 								win.after_cancel(imove)
@@ -282,7 +283,9 @@ def launch(select_map):
 				Life -= 1
 				info_box()
 				game_over()
-
+				
+				
+	#CLASSE POUR LES TOURELLES
 
 	class Tower:
 
@@ -293,12 +296,24 @@ def launch(select_map):
 			self.savetimeshot = 20 / multiply
 			self.multiply = multiply
 			self.range = 2*C*multiply
+			
+			
+	#INTERVALLE DE TEMPS ENTRE LES TIRS
 
 	def timingshot():
 		global shotter
 		for i, tow in enumerate(towertab):
 			tow.timeshot -= 1
 		win.after(75, timingshot)
+		
+		
+	#DETRUIT LES TIRS
+	
+	def destroy_shot(shotter):
+		win.delete(shotter)
+
+
+	#VAGUES D'ENNEMIS
 
 	def wave(n = Nb_enmywave):
 		global Wave
@@ -315,9 +330,9 @@ def launch(select_map):
 			Nb_enmywave += random.randint(3, 5)
 			b_wave.configure(state='active')
 		info_box()
-
-	def close_window(root):
-		root.destroy()
+	
+		
+	#SYSTEME D'ARGENT
 
 	def money_up():
 		global Money
@@ -325,6 +340,8 @@ def launch(select_map):
 		Money += 1
 		stopmoney = win.after(2000, money_up)
 		info_box()
+		
+	#DEFAITE
 
 	def game_over():
 		global Life
@@ -336,10 +353,9 @@ def launch(select_map):
 			info_box()
 			win.unbind("<Button-1>")
 			menu.unbind("<Button-1>")
-	
-	def destroy_shot(shotter):
-		win.delete(shotter)
 		
+	#VICTOIRE
+	
 	def winner():
 		global Wave
 		if Wave > 10:
@@ -349,6 +365,13 @@ def launch(select_map):
 			Wave = 10
 			win.unbind("<Button-1>")
 			menu.unbind("<Button-1>")
+		
+	
+	#FERME LE JEU
+
+	def close_window(root):
+		root.destroy()
+		
 
 	#CALLS
 
